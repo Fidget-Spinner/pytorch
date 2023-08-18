@@ -12,6 +12,7 @@ import torch._logging
 from torch._guards import tracing
 from torch._utils_internal import log_compilation_event, signpost_event
 from torch.fx.experimental.symbolic_shapes import (
+    bisect,
     ConstraintViolationError,
     GuardOnDataDependentSymNode,
 )
@@ -434,11 +435,7 @@ def _compile(
             raise
         except Exception:
             if translation_validation_enabled():
-                fakes = tracer.output.tracked_fakes
-                tracer.output.shape_env.produce_guards(
-                    [a.fake for a in fakes],
-                    [a.source for a in fakes],
-                )
+                bisect(tracer.output.shape_env, tracer.output.tracked_fakes)
             raise
 
         output = tracer.output
