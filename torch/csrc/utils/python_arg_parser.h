@@ -1045,7 +1045,6 @@ inline double PythonArgs::toDoubleWithDefault(int i, double default_double) {
 }
 
 inline c10::complex<double> PythonArgs::toComplex(int i) {
-  // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
   c10::complex<double> default_value = *const_cast<c10::complex<double>*>(
       reinterpret_cast<const c10::complex<double>*>(
           signature.params[i].default_complex));

@@ -107,9 +107,9 @@ PyObject* THPDTypeInfo_compare(THPDTypeInfo* a, THPDTypeInfo* b, int op) {
 }
 
 static PyObject* THPDTypeInfo_bits(THPDTypeInfo* self, void*) {
-  // NOLINTNEXTLINE(bugprone-narrowing-conversions,cppcoreguidelines-narrowing-conversions,cppcoreguidelines-avoid-magic-numbers)
-  int64_t bits = elementSize(self->type) * 8;
-  return THPUtils_packInt64(bits);
+  // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers)
+  uint64_t bits = elementSize(self->type) * 8;
+  return THPUtils_packUInt64(bits);
 }
 
 static PyObject* THPFInfo_eps(THPFInfo* self, void*) {
