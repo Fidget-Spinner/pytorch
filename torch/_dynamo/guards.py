@@ -33,11 +33,7 @@ from torch._guards import (
     GuardSource,
     Source,
 )
-from torch.fx.experimental.symbolic_shapes import (
-    EqualityConstraint,
-    is_concrete_int,
-    SYMPY_INTERP,
-)
+from torch.fx.experimental.symbolic_shapes import EqualityConstraint, SYMPY_INTERP
 
 from torch.utils.weak import TensorWeakRef, WeakIdRef
 
@@ -935,10 +931,11 @@ class CheckFunctionManager:
             def convert(size_or_stride):
                 converted: List[Optional[int]] = []
                 for dim in size_or_stride:
-                    if is_concrete_int(dim):
-                        converted.append(int(dim))
+                    if isinstance(dim, int):
+                        converted.append(dim)
                     else:
-                        converted.append(None)
+                        assert isinstance(dim, torch.SymInt)
+                        converted.append(dim.node.maybe_as_int())
                 return converted
 
             dynamic_dims_sizes = [
