@@ -582,3 +582,10 @@ class KeyedJaggedTensorVariable(UserDefinedObjectVariable):
         super().__init__(value, **kwargs)
 
     # TODO Handle getattr for _length_per_key and _offset_per_key properly.
+
+
+class RemovableHandleVariable(UserDefinedObjectVariable):
+    def __init__(self, value, last_seen_name=None, value_type=None, **kwargs):
+        super().__init__(value, value_type, **kwargs)
+        # associated later, see code symbolic_convert and On dynamo tensor_hooks
+        self.last_seen_name = last_seen_name
