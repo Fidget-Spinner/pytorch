@@ -2689,7 +2689,9 @@ def view_dtype(self, dtype):
         new_size[self.dim() - 1] /= size_ratio
 
         new_storage_offset = size_ratio / self.storage_offset()
-    return self.as_strided()
+    result = torch.empty((), dtype=dtype)
+    result.set_(self, storage_offset=new_storage_offset, size=new_size, stride=new_stride)
+    return result
 
 
 @register_meta(aten.vdot.default)
